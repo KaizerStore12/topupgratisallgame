@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>💀 SYSTEM CRASH 💀</title>
+<title>⚠️ SYSTEM LOCKED ⚠️</title>
 <style>
 html, body {
   margin: 0;
@@ -18,44 +18,42 @@ body.lock * { pointer-events: none; }
 
 #message {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   font-size: 3em;
   animation: blink 0.3s infinite;
 }
+
 @keyframes blink {
   0%,50%,100% { opacity: 1; }
   25%,75% { opacity: 0; }
 }
 
-#bsod {
+#unlockBtn {
   display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: #0000AA;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px 40px;
+  font-size: 1.5em;
+  cursor: pointer;
+  background: green;
   color: white;
-  font-family: monospace;
-  font-size: 2em;
-  text-align: center;
-  padding-top: 20%;
+  border: none;
+  border-radius: 10px;
 }
 </style>
 </head>
 <body class="lock">
 <div id="message">
 ⚠️ SYSTEM LOCKED ⚠️<br>
-DATA ANDA TERANCAM!<br>
-JANGAN TUTUP HALAMAN!
+JANGAN TUTUP HALAMAN!<br>
+DATA ANDA TERANCAM!
 </div>
-<div id="bsod">
-A problem has been detected and Windows has been shut down to prevent damage.<br>
-SYSTEM CRASH<br>
-Error: 0xDEADDEAD
-</div>
+<button id="unlockBtn">Hapus Virus</button>
 
 <script>
 // fullscreen prank
@@ -68,10 +66,10 @@ goFullscreen();
 // background berkedip cepat
 let colors = ["red","black","darkred","black"];
 let i = 0;
-setInterval(() => {
+let bgInterval = setInterval(() => {
   document.body.style.background = colors[i % colors.length];
   i++;
-}, 150);
+}, 200);
 
 // suara alarm looping
 let audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
@@ -93,17 +91,21 @@ document.addEventListener('keydown', e => e.preventDefault());
 document.addEventListener('mousedown', e => e.preventDefault());
 document.addEventListener('touchstart', e => e.preventDefault());
 
-// popup muncul terus
-setInterval(() => {
-  alert("⚠️ WARNING! SYSTEM CRASH DETECTED ⚠️");
-}, 5000);
-
-// BSOD palsu muncul setelah 10 detik
+// munculkan tombol “hapus virus” setelah 8 detik
 setTimeout(() => {
-  document.getElementById('message').style.display = 'none';
-  document.getElementById('bsod').style.display = 'block';
-}, 10000);
+  const btn = document.getElementById('unlockBtn');
+  btn.style.display = 'block';
+  btn.style.pointerEvents = 'auto';
+  btn.addEventListener('click', () => {
+    clearInterval(bgInterval);
+    audio.pause();
+    document.getElementById('message').innerHTML = "✅ Virus Telah Dihapus!";
+    btn.style.display = 'none';
+    document.body.style.background = "black";
+    document.body.classList.remove('lock');
+    alert("Virus telah dihapus. Anda bisa menutup tab dengan aman.");
+  });
+}, 8000);
 </script>
 </body>
 </html>
-

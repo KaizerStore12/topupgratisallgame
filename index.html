@@ -2,67 +2,108 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>WARNING!</title>
+<title>💀 SYSTEM CRASH 💀</title>
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: black;
-    color: red;
-    font-size: 3em;
-    font-family: monospace;
-    overflow: hidden;
-  }
-  #message {
-    text-align: center;
-    animation: blink 0.5s infinite;
-  }
-  @keyframes blink {
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75% { opacity: 0; }
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+  color: red;
+  font-family: monospace;
+  overflow: hidden;
+}
+body.lock * { pointer-events: none; }
+
+#message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 3em;
+  animation: blink 0.3s infinite;
+}
+@keyframes blink {
+  0%,50%,100% { opacity: 1; }
+  25%,75% { opacity: 0; }
+}
+
+#bsod {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0000AA;
+  color: white;
+  font-family: monospace;
+  font-size: 2em;
+  text-align: center;
+  padding-top: 20%;
+}
 </style>
 </head>
-<body>
+<body class="lock">
 <div id="message">
-⚠️ VIRUS TERDETEKSI ⚠️<br>
-SEMUA DATA ANDA TERANCAM!<br>
+⚠️ SYSTEM LOCKED ⚠️<br>
+DATA ANDA TERANCAM!<br>
 JANGAN TUTUP HALAMAN!
+</div>
+<div id="bsod">
+A problem has been detected and Windows has been shut down to prevent damage.<br>
+SYSTEM CRASH<br>
+Error: 0xDEADDEAD
 </div>
 
 <script>
-  // fullscreen prank
-  function goFullscreen() {
-    let el = document.documentElement;
-    if (el.requestFullscreen) el.requestFullscreen();
-  }
-  goFullscreen();
+// fullscreen prank
+function goFullscreen() {
+  let el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen();
+}
+goFullscreen();
 
-  // flash background
-  let colors = ["red","black","darkred","black"];
-  let i = 0;
-  setInterval(() => {
-    document.body.style.background = colors[i % colors.length];
-    i++;
-  }, 300);
+// background berkedip cepat
+let colors = ["red","black","darkred","black"];
+let i = 0;
+setInterval(() => {
+  document.body.style.background = colors[i % colors.length];
+  i++;
+}, 150);
 
-  // suara alarm
-  let audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
-  audio.loop = true;
-  audio.play();
+// suara alarm looping
+let audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
+audio.loop = true;
+audio.play();
 
-  // hindari klik kanan
-  document.addEventListener('contextmenu', e => e.preventDefault());
+// blokir klik kanan
+document.addEventListener('contextmenu', e => e.preventDefault());
 
-  // hindari tombol back
+// blokir back button
+history.pushState(null, document.title, location.href);
+window.addEventListener('popstate', function () {
   history.pushState(null, document.title, location.href);
-  window.addEventListener('popstate', function () {
-    history.pushState(null, document.title, location.href);
-    alert("Tombol kembali dinonaktifkan!");
-  });
+  alert("Tombol kembali dinonaktifkan!");
+});
+
+// hapus semua input keyboard/mouse/touch
+document.addEventListener('keydown', e => e.preventDefault());
+document.addEventListener('mousedown', e => e.preventDefault());
+document.addEventListener('touchstart', e => e.preventDefault());
+
+// popup muncul terus
+setInterval(() => {
+  alert("⚠️ WARNING! SYSTEM CRASH DETECTED ⚠️");
+}, 5000);
+
+// BSOD palsu muncul setelah 10 detik
+setTimeout(() => {
+  document.getElementById('message').style.display = 'none';
+  document.getElementById('bsod').style.display = 'block';
+}, 10000);
 </script>
 </body>
 </html>
+

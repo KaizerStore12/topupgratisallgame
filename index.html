@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>WARNING!</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    color: red;
+    font-size: 3em;
+    font-family: monospace;
+    overflow: hidden;
+  }
+  #message {
+    text-align: center;
+    animation: blink 0.5s infinite;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div id="message">
+⚠️ VIRUS TERDETEKSI ⚠️<br>
+SEMUA DATA ANDA TERANCAM!<br>
+JANGAN TUTUP HALAMAN!
+</div>
+
+<script>
+  // fullscreen prank
+  function goFullscreen() {
+    let el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+  }
+  goFullscreen();
+
+  // flash background
+  let colors = ["red","black","darkred","black"];
+  let i = 0;
+  setInterval(() => {
+    document.body.style.background = colors[i % colors.length];
+    i++;
+  }, 300);
+
+  // suara alarm
+  let audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
+  audio.loop = true;
+  audio.play();
+
+  // hindari klik kanan
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // hindari tombol back
+  history.pushState(null, document.title, location.href);
+  window.addEventListener('popstate', function () {
+    history.pushState(null, document.title, location.href);
+    alert("Tombol kembali dinonaktifkan!");
+  });
+</script>
+</body>
+</html>

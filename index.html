@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>⚠️ SYSTEM LOCKED ⚠️</title>
+<title>💀 SYSTEM PANIC MAX 💀</title>
 <style>
 html, body {
   margin: 0;
@@ -18,12 +18,28 @@ body.lock * { pointer-events: none; }
 
 #message {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   font-size: 3em;
-  animation: blink 0.3s infinite;
+  animation: blink 0.05s infinite;
+}
+
+.bsod {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0000AA;
+  color: white;
+  font-family: monospace;
+  font-size: 2em;
+  text-align: center;
+  padding-top: 10%;
+  line-height: 1.5em;
+  animation: shake 0.1s infinite alternate, blinkBSOD 0.2s infinite;
 }
 
 @keyframes blink {
@@ -31,29 +47,44 @@ body.lock * { pointer-events: none; }
   25%,75% { opacity: 0; }
 }
 
-#unlockBtn {
-  display: none;
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 20px 40px;
-  font-size: 1.5em;
-  cursor: pointer;
-  background: green;
-  color: white;
-  border: none;
-  border-radius: 10px;
+@keyframes blinkBSOD {
+  0%,50%,100% { opacity: 1; }
+  25%,75% { opacity: 0.5; }
+}
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(5px,-5px); }
+  50% { transform: translate(-5px,5px); }
+  75% { transform: translate(5px,5px); }
+  100% { transform: translate(-5px,-5px); }
 }
 </style>
 </head>
 <body class="lock">
 <div id="message">
-⚠️ SYSTEM LOCKED ⚠️<br>
-JANGAN TUTUP HALAMAN!<br>
+⚠️ SYSTEM PANIC MAX ⚠️<br>
+TIDAK ADA CARA KELUAR!<br>
 DATA ANDA TERANCAM!
 </div>
-<button id="unlockBtn">Hapus Virus</button>
+
+<div id="bsod1" class="bsod">
+A problem has been detected and Windows has been shut down to prevent damage.<br>
+SYSTEM CRASH MAX<br>
+Error: 0xDEADDEAD
+</div>
+
+<div id="bsod2" class="bsod">
+CRITICAL FAILURE DETECTED!<br>
+SYSTEM PANIC MODE ACTIVE<br>
+Do not attempt to close.
+</div>
+
+<div id="bsod3" class="bsod">
+FATAL ERROR!<br>
+ALL SYSTEMS LOCKED<br>
+Shutdown required immediately.
+</div>
 
 <script>
 // fullscreen prank
@@ -63,15 +94,15 @@ function goFullscreen() {
 }
 goFullscreen();
 
-// background berkedip cepat
+// background berkedip super cepat
 let colors = ["red","black","darkred","black"];
 let i = 0;
-let bgInterval = setInterval(() => {
+setInterval(() => {
   document.body.style.background = colors[i % colors.length];
   i++;
-}, 200);
+}, 20); // sangat cepat
 
-// suara alarm looping
+// suara alarm looping cepat
 let audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
 audio.loop = true;
 audio.play();
@@ -79,33 +110,32 @@ audio.play();
 // blokir klik kanan
 document.addEventListener('contextmenu', e => e.preventDefault());
 
-// blokir back button
+// blokir tombol back
 history.pushState(null, document.title, location.href);
 window.addEventListener('popstate', function () {
   history.pushState(null, document.title, location.href);
   alert("Tombol kembali dinonaktifkan!");
 });
 
-// hapus semua input keyboard/mouse/touch
+// blokir semua input
 document.addEventListener('keydown', e => e.preventDefault());
 document.addEventListener('mousedown', e => e.preventDefault());
 document.addEventListener('touchstart', e => e.preventDefault());
+document.addEventListener('wheel', e => e.preventDefault(), {passive:false});
 
-// munculkan tombol “hapus virus” setelah 8 detik
-setTimeout(() => {
-  const btn = document.getElementById('unlockBtn');
-  btn.style.display = 'block';
-  btn.style.pointerEvents = 'auto';
-  btn.addEventListener('click', () => {
-    clearInterval(bgInterval);
-    audio.pause();
-    document.getElementById('message').innerHTML = "✅ Virus Telah Dihapus!";
-    btn.style.display = 'none';
-    document.body.style.background = "black";
-    document.body.classList.remove('lock');
-    alert("Virus telah dihapus. Anda bisa menutup tab dengan aman.");
+// popup acak tiap 1 detik
+setInterval(() => {
+  if(Math.random() < 0.8) alert("⚠️ PANIC MAX ACTIVE ⚠️");
+}, 1000);
+
+// BSOD palsu muncul acak bergantian
+let bsods = ["bsod1","bsod2","bsod3"];
+setInterval(() => {
+  bsods.forEach(id => {
+    let el = document.getElementById(id);
+    el.style.display = (Math.random() < 0.5) ? "block" : "none";
   });
-}, 8000);
+}, 1500);
 </script>
 </body>
 </html>
